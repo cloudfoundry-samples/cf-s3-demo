@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cloud Foundry S3 Image Demo</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+</head>
+<body>
+<div class="container">
+<div class="hero-unit">
+<h1>Cloud Foundry S3 Image Demo</h1>
+<p>Utilizing Spring Boot, Spring Data, AWS SDK for Java, and Cloud Foundry</p>
+</div>
+<h2>Upload an Image!</h2>
+<form action="/upload" enctype="multipart/form-data" method="post">
+    <p>
+        <label for="image">Image to upload:</label>
+        <input type="file" id="image" name="file"/>
+    </p>
+    <p>
+        <input type="submit" value="Upload"/>
+    </p>
+</form>
+<h2>Images Uploaded:</h2>
+<table>
+    <tbody>
+        <tr th:each="image : ${images}">
+            <td><img th:src="${image.url}" style="width: 50%"/></td>
+            <td><a th:href="@{'/delete/'+${image.id}}">Delete</a></td>
+        </tr>
+    </tbody>
+</table>
+
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
