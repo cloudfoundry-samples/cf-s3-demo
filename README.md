@@ -8,8 +8,8 @@ This is a simple example of using Amazon S3 for asset storage. It is an image ca
 
 <pre><code>---
 s3:
-  aws_access_key: <YOUR_AWS_ACCESS_KEY>
-  aws_secret_key: <YOUR_AWS_SECRET_KEY>
+  aws_access_key: your-aws-access-key
+  aws_secret_key: your-aws-secret-key
   bucket: the-bucket-name-you-want-to-use
 mongo:
   host: mongo-host
