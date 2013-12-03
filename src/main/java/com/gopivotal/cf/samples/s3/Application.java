@@ -30,7 +30,6 @@ import java.util.UUID;
 @Controller
 @ComponentScan
 @EnableAutoConfiguration
-@EnableConfigurationProperties({MongoLocalConfig.class, S3Properties.class})
 @EnableMongoRepositories(basePackageClasses = {MongoS3FileRepository.class})
 public class Application {
 

@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import java.net.UnknownHostException;
 
 @Configuration
-@Profile("mongodb-local")
+@Profile("default")
 @EnableConfigurationProperties(MongoProperties.class)
 public class MongoLocalConfig {
 
