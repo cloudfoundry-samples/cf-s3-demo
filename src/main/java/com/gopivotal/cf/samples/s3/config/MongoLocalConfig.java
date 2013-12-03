@@ -1,4 +1,4 @@
-package com.gopivotal.cf.samples.s3;
+package com.gopivotal.cf.samples.s3.config;
 
 import com.mongodb.Mongo;
 import org.springframework.beans.factory.annotation.Autowired;

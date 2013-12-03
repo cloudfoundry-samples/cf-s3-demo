@@ -1,4 +1,4 @@
-package com.gopivotal.cf.samples.s3;
+package com.gopivotal.cf.samples.s3.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

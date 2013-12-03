@@ -1,4 +1,4 @@
-package com.gopivotal.cf.samples.s3;
+package com.gopivotal.cf.samples.s3.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;

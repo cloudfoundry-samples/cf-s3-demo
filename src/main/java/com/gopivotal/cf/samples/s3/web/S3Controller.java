@@ -1,18 +1,11 @@
-package com.gopivotal.cf.samples.s3;
+package com.gopivotal.cf.samples.s3.web;
 
+import com.gopivotal.cf.samples.s3.data.MongoS3FileRepository;
 import com.gopivotal.cf.samples.s3.repository.S3;
 import com.gopivotal.cf.samples.s3.repository.S3File;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cloud.cloudfoundry.CloudFoundryConnector;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.MultipartConfigElement;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,25 +22,15 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
-@ComponentScan
-@EnableAutoConfiguration
-@EnableMongoRepositories(basePackageClasses = {MongoS3FileRepository.class})
-public class Application {
+public class S3Controller {
 
-    Log log = LogFactory.getLog(Application.class);
+    Log log = LogFactory.getLog(S3Controller.class);
 
     @Autowired
     MongoS3FileRepository repository;
 
     @Autowired
     S3 s3;
-
-    public static void main(String[] args) {
-        if (new CloudFoundryConnector().isInMatchingCloud()) {
-            System.setProperty("spring.profiles.active", "cloud");
-        }
-        SpringApplication.run(Application.class, args);
-    }
 
     @RequestMapping("/")
     public String index(Model model) {
@@ -73,7 +55,7 @@ public class Application {
         return "redirect:/";
     }
 
-    @RequestMapping(value="/upload", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String handleFileUpload(@RequestParam("file") MultipartFile file) {
 
         String id = UUID.randomUUID().toString();
@@ -98,15 +80,5 @@ public class Application {
         log.info(s3File.getFile().getAbsolutePath() + " is deleted.");
 
         return "redirect:/";
-    }
-
-    @Bean
-    public MongoTemplate mongoTemplate(MongoDbFactory mongoDbFactory) {
-        return new MongoTemplate(mongoDbFactory);
-    }
-
-    @Bean
-    MultipartConfigElement multipartConfigElement() {
-        return new MultipartConfigElement("");
     }
 }

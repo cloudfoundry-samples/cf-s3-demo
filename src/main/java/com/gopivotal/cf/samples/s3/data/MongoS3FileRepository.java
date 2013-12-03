@@ -1,4 +1,4 @@
-package com.gopivotal.cf.samples.s3;
+package com.gopivotal.cf.samples.s3.data;
 
 import com.gopivotal.cf.samples.s3.repository.S3File;
 import org.springframework.data.mongodb.repository.MongoRepository;

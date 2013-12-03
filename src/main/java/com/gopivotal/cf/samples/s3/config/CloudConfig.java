@@ -1,4 +1,4 @@
-package com.gopivotal.cf.samples.s3;
+package com.gopivotal.cf.samples.s3.config;
 
 import com.gopivotal.cf.samples.s3.repository.S3;
 import org.springframework.cloud.Cloud;
