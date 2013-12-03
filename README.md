@@ -1,8 +1,8 @@
-= CF S3 Demo
+# CF S3 Demo
 
 This is a simple example of using Amazon S3 for asset storage. It is an image catalog to which you can upload images and see them on the main page.
 
-== Running Locally
+## Running Locally
 
 * Create a file called `application.yml` in `src/main/resources`. It should have the following structure (replace the values with those appropriate for your environment):
 
@@ -22,7 +22,7 @@ This is a simple example of using Amazon S3 for asset storage. It is an image ca
 * Run `java -jar build/libs/cf-s3-demo.jar`
 * Browse to http://localhost:8080
 
-== Running on Cloud Foundry
+## Running on Cloud Foundry
 
 Assuming you already have an account at http://run.pivotal.io:
 
