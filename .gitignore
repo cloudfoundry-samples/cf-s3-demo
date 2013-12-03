@@ -5,3 +5,4 @@ application.yml
 .gradle
 out
 build
+manifest.yml

@@ -1,11 +1,13 @@
 package com.gopivotal.cf.samples.s3;
 
+import com.gopivotal.cf.samples.s3.repository.S3;
+import com.gopivotal.cf.samples.s3.repository.S3File;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.cloudfoundry.CloudFoundryConnector;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.MongoDbFactory;
@@ -39,12 +41,12 @@ public class Application {
     MongoS3FileRepository repository;
 
     @Autowired
-    S3Properties s3Properties;
-
-    @Autowired
     S3 s3;
 
     public static void main(String[] args) {
+        if (new CloudFoundryConnector().isInMatchingCloud()) {
+            System.setProperty("spring.profiles.active", "cloud");
+        }
         SpringApplication.run(Application.class, args);
     }
 
@@ -86,7 +88,7 @@ public class Application {
             throw new RuntimeException("Failed to upload file!", e);
         }
 
-        S3File s3File = new S3File(id, s3Properties.getBucket(), file.getOriginalFilename(), uploadedFile);
+        S3File s3File = s3.createS3FileObject(id, file.getOriginalFilename(), uploadedFile);
 
         s3.put(s3File);
         log.info(s3File.getName() + " put to S3.");

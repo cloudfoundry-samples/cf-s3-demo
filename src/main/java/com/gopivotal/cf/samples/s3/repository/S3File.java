@@ -1,4 +1,4 @@
-package com.gopivotal.cf.samples.s3;
+package com.gopivotal.cf.samples.s3.repository;
 
 import org.springframework.data.annotation.Transient;
 
@@ -16,7 +16,7 @@ public class S3File {
     public S3File() {
     }
 
-    public S3File(String id, String bucket, String name, File file) {
+    S3File(String id, String bucket, String name, File file) {
         this.id = id;
         this.bucket = bucket;
         this.name = name;
