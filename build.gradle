@@ -34,7 +34,6 @@ repositories {
     compile "org.springframework.boot:spring-boot-starter-data-jpa:${bootVersion}"
     compile "org.springframework.boot:spring-boot-starter-thymeleaf:${bootVersion}"
 
-//    compile "org.thymeleaf:thymeleaf-spring3:2.0.16"
     compile 'com.amazonaws:aws-java-sdk:1.6.7'
     runtime "org.yaml:snakeyaml:1.12"
     runtime "mysql:mysql-connector-java:5.1.26"
