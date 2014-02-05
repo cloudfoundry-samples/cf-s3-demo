@@ -11,12 +11,11 @@ s3:
   aws_access_key: your-aws-access-key
   aws_secret_key: your-aws-secret-key
   bucket: the-bucket-name-you-want-to-use
-mongo:
-  host: mongo-host
-  port: 12345
-  dbname: mongo-db
-  username: mongo-user
-  password: mongo-pw</code></pre>
+mysql:
+  driver: com.mysql.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/mysql_db
+  username: mysql_db
+  password: mysql_pw</code></pre>
 
 * Run `./gradlew assemble`
 * Run `java -jar build/libs/cf-s3-demo.jar`
@@ -26,7 +25,7 @@ mongo:
 
 Assuming you already have an account at http://run.pivotal.io:
 
-* Using `cf create-service`, create a MongoLab service.
+* Using `cf create-service`, create a ClearDB service.
 * Using `cf create-service`, create a User-Provided service, making sure its name begins with "s3". It should have the following credentials (assign values appropriate for your environment):
     * `awsAccessKey`
     * `awsSecretKey`

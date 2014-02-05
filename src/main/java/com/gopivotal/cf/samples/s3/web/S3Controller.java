@@ -1,6 +1,6 @@
 package com.gopivotal.cf.samples.s3.web;
 
-import com.gopivotal.cf.samples.s3.data.MongoS3FileRepository;
+import com.gopivotal.cf.samples.s3.data.S3FileRepository;
 import com.gopivotal.cf.samples.s3.repository.S3;
 import com.gopivotal.cf.samples.s3.repository.S3File;
 import org.apache.commons.logging.Log;
@@ -27,16 +27,16 @@ public class S3Controller {
     Log log = LogFactory.getLog(S3Controller.class);
 
     @Autowired
-    MongoS3FileRepository repository;
+    S3FileRepository repository;
 
     @Autowired
     S3 s3;
 
-    @RequestMapping("/")
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) {
         model.addAttribute("message", "Hello Boot!");
 
-        List<S3File> images = repository.findAll();
+        Iterable<S3File> images = repository.findAll();
         model.addAttribute("images", images);
 
         return "index";
@@ -48,7 +48,7 @@ public class S3Controller {
         S3File s3File = repository.findOne(id);
 
         repository.delete(s3File);
-        log.info(s3File.getId() + " deleted from Mongo.");
+        log.info(s3File.getId() + " deleted from MySQL.");
         s3.delete(s3File);
         log.info(s3File.getActualFileName() + " deleted from S3 bucket.");
 
@@ -75,7 +75,7 @@ public class S3Controller {
         s3.put(s3File);
         log.info(s3File.getName() + " put to S3.");
         repository.save(s3File);
-        log.info(s3File.getName() + " record saved to Mongo.");
+        log.info(s3File.getName() + " record saved to MySQL.");
         uploadedFile.delete();
         log.info(s3File.getFile().getAbsolutePath() + " is deleted.");
 
