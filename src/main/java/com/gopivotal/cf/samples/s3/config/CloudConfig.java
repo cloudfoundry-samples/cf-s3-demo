@@ -27,8 +27,7 @@ public class CloudConfig extends AbstractCloudConfig {
 
         DataSourceConfig config = new DataSourceConfig(poolConfig, new DataSourceConfig.ConnectionConfig(""));
 
-        DataSource dataSource = connectionFactory().dataSource(config);
-        return dataSource;
+        return connectionFactory().dataSource(config);
     }
 
     @Bean
