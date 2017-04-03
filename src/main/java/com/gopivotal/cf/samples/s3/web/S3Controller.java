@@ -18,7 +18,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.UUID;
 
 @Controller
@@ -47,10 +48,10 @@ public class S3Controller {
 
         S3File s3File = repository.findOne(id);
 
-        repository.delete(s3File);
-        log.info(s3File.getId() + " deleted from MySQL.");
         s3.delete(s3File);
         log.info(s3File.getActualFileName() + " deleted from S3 bucket.");
+        repository.delete(s3File);
+        log.info(s3File.getId() + " deleted from MySQL.");
 
         return "redirect:/";
     }
@@ -67,17 +68,23 @@ public class S3Controller {
             stream.write(bytes);
             stream.close();
         } catch (IOException e) {
-            throw new RuntimeException("Failed to upload file!", e);
+            throw new RuntimeException("Failed to upload file.", e);
         }
 
         S3File s3File = s3.createS3FileObject(id, file.getOriginalFilename(), uploadedFile);
 
-        s3.put(s3File);
-        log.info(s3File.getName() + " put to S3.");
-        repository.save(s3File);
-        log.info(s3File.getName() + " record saved to MySQL.");
+        try {
+            URL url = s3.put(s3File);
+            s3File.setUrl(url);
+            log.info(s3File.getName() + " put to S3.");
+            repository.save(s3File);
+            log.info(s3File.getName() + " record saved to MySQL.");
+        } catch (MalformedURLException e){
+            throw new RuntimeException("Failed saving file to backend.", e);
+        }
+
         uploadedFile.delete();
-        log.info(s3File.getFile().getAbsolutePath() + " is deleted.");
+        log.info(s3File.getFile().getAbsolutePath() + " temporary file is deleted.");
 
         return "redirect:/";
     }

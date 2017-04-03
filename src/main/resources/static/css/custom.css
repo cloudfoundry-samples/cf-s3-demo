@@ -1,0 +1,26 @@
+.btn-delete {
+    position: absolute;
+    right: 30px;
+    top: 15px;
+    display: none;
+}
+
+.thumbnail:hover .btn-delete {
+    display: block;
+}
+
+.img-wrapper {
+    overflow: hidden;
+}
+
+.img-wrapper img {
+    height: 200px !important;
+    width: auto !important;
+    max-width: none !important;
+}
+
+.caption {
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

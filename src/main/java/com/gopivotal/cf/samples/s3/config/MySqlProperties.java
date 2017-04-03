@@ -2,7 +2,7 @@ package com.gopivotal.cf.samples.s3.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(name = "mysql", path = "classpath:application.yml")
+@ConfigurationProperties(prefix = "mysql")
 public class MySqlProperties {
 
     private String driver;
