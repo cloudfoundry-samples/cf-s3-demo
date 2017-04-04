@@ -4,29 +4,58 @@ import org.springframework.cloud.service.BaseServiceInfo;
 
 public class S3ServiceInfo extends BaseServiceInfo {
 
-    private String awsAccessKey;
-    private String awsSecretKey;
+    private String accessKey;
+    private String secretKey;
     private String bucket;
+    private String region;
+    private String endpoint;
+    private Boolean pathStyleAccess;
+    private String baseUrl;
 
-    public S3ServiceInfo(String id, String awsAccessKey, String awsSecretKey, String bucket) {
+    public S3ServiceInfo(String id, String accessKey, String secretKey, String bucket, String region,
+                         String endpoint, Boolean pathStyleAccess, String baseUrl) {
         super(id);
-        this.awsAccessKey = awsAccessKey;
-        this.awsSecretKey = awsSecretKey;
+        this.accessKey = accessKey;
+        this.secretKey = secretKey;
         this.bucket = bucket;
+        this.region = region;
+        this.endpoint = endpoint;
+        this.pathStyleAccess = pathStyleAccess;
+        this.baseUrl = baseUrl;
     }
 
     @ServiceProperty
-    public String getAwsAccessKey() {
-        return awsAccessKey;
+    public String getAccessKey() {
+        return accessKey;
     }
 
     @ServiceProperty
-    public String getAwsSecretKey() {
-        return awsSecretKey;
+    public String getSecretKey() {
+        return secretKey;
     }
 
     @ServiceProperty
     public String getBucket() {
         return bucket;
+    }
+
+    @ServiceProperty
+    public String getRegion() {
+        return region;
+    }
+
+    @ServiceProperty
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    @ServiceProperty
+    public Boolean getPathStyleAccess() {
+        return pathStyleAccess;
+    }
+
+    @ServiceProperty
+    public String getBaseUrl() {
+        return baseUrl;
     }
 }

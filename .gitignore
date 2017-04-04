@@ -6,3 +6,4 @@ application.yml
 out
 build
 manifest*.yml
+.idea/

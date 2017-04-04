@@ -1,46 +1,45 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven { url "http://repo.springsource.org/snapshot" }
-        maven { url "http://repo.springsource.org/milestone" }
     }
 
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.0.BUILD-SNAPSHOT")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
     }
 }
 
 ext {
-    bootVersion = "1.0.0.BUILD-SNAPSHOT"
+    bootVersion = "1.5.2.RELEASE"
 }
 
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
+//apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
 
 repositories {
-  mavenCentral()
-  mavenLocal()
+    mavenCentral()
+    //mavenLocal()
 
-  maven { url "http://repo.springsource.org/snapshot" }
-  maven { url "http://repo.springsource.org/milestone" }
+    //maven { url "http://repo.springsource.org/snapshot" }
+    //maven { url "http://repo.springsource.org/milestone" }
+}
 
-  dependencies {
-    compile 'org.springframework.cloud:core:0.9.3.BUILD-SNAPSHOT'
-    compile 'org.springframework.cloud:spring-service-connector:0.9.3.BUILD-SNAPSHOT'
-    compile 'org.springframework.cloud:cloudfoundry-connector:0.9.3.BUILD-SNAPSHOT'
+dependencies {
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-core', version: '1.2.3.RELEASE'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-spring-service-connector', version: '1.2.3.RELEASE'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-cloudfoundry-connector', version: '1.2.3.RELEASE'
     compile "org.springframework.boot:spring-boot-starter-actuator:${bootVersion}"
     compile "org.springframework.boot:spring-boot-starter-tomcat:${bootVersion}"
     compile "org.springframework.boot:spring-boot-starter-web:${bootVersion}"
     compile "org.springframework.boot:spring-boot-starter-data-jpa:${bootVersion}"
     compile "org.springframework.boot:spring-boot-starter-thymeleaf:${bootVersion}"
-
-    compile 'com.amazonaws:aws-java-sdk:1.6.7'
-    runtime "org.yaml:snakeyaml:1.12"
-    runtime "mysql:mysql-connector-java:5.1.26"
-  }
+    compile 'com.amazonaws:aws-java-sdk:1.11.113'
+    runtime "org.yaml:snakeyaml:1.18"
+    runtime "mysql:mysql-connector-java:6.0.6"
+    compile group: 'net.minidev', name: 'json-smart', version: '2.3'
 }
 
+
 task wrapper(type: Wrapper) {
-  gradleVersion = '1.6'
+    gradleVersion = '3.4'
 }
 

@@ -4,7 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 @Entity
@@ -14,6 +13,7 @@ public class S3File {
     private String id;
     private String bucket;
     private String name;
+    private URL url;
     @Transient
     private File file;
 
@@ -43,8 +43,12 @@ public class S3File {
         return file;
     }
 
-    public URL getUrl() throws MalformedURLException {
-        return new URL("https://s3.amazonaws.com/" + bucket + "/" + getActualFileName());
+    public void setUrl(URL url) {
+        this.url = url;
+    }
+
+    public URL getUrl() {
+        return url;
     }
 
     public String getActualFileName() {

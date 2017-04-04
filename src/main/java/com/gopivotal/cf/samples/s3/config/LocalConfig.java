@@ -1,9 +1,14 @@
 package com.gopivotal.cf.samples.s3.config;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.gopivotal.cf.samples.s3.repository.S3;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,13 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.jpa.JpaVendorAdapter;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.Database;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.sql.DataSource;
-import java.util.Properties;
 
 @Configuration
 @Profile("default")
@@ -44,11 +44,34 @@ public class LocalConfig {
 
     @Bean
     public S3 s3() {
-        AWSCredentials awsCredentials = new BasicAWSCredentials(s3Properties.getAwsAccessKey(), s3Properties.getAwsSecretKey());
-        AmazonS3 amazonS3 = new AmazonS3Client(awsCredentials);
-        amazonS3.createBucket(s3Properties.getBucket());
+        AWSCredentials awsCredentials = new BasicAWSCredentials(s3Properties.getAccessKey(), s3Properties.getSecretKey());
+
+        AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+                .withPathStyleAccessEnabled(s3Properties.getPathStyleAccess());
+
+        if (s3Properties.getEndpoint() != null) {
+            // if a custom endpoint is set, we will ignore the region
+            builder.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
+                    s3Properties.getEndpoint(), "Standard"
+            ));
+        } else {
+            builder.withRegion(s3Properties.getRegion());
+        }
+
+        AmazonS3 amazonS3 = builder.build();
+
+        try {
+            amazonS3.createBucket(
+                    new CreateBucketRequest(s3Properties.getBucket()).withCannedAcl(CannedAccessControlList.PublicRead)
+            );
+        } catch (AmazonServiceException e) {
+            if (!e.getErrorCode().equals("BucketAlreadyOwnedByYou")) {
+                throw e;
+            }
+        }
         log.info("Using S3 Bucket: " + s3Properties.getBucket());
-        return new S3(amazonS3, s3Properties.getBucket());
+        return new S3(amazonS3, s3Properties.getBucket(), s3Properties.getBaseUrl());
     }
 
 }
